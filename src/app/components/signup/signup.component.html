@@ -1,0 +1,25 @@
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <p class="display-4">SIGN UP</p>
+        <form [formGroup]="loginForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" aria-describedby="helpId" formControlName="email">
+            <small id="helpId" class="text-muted">Enter Email</small>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" aria-describedby="helpId2"
+              formControlName="password">
+            <small id="helpId2" class="text-muted">Enter Password</small>
+          </div>
+          <button (click)="signUp(loginForm.value)" class="btn btn-dark btn-block" [disabled]='!loginForm.valid'>SIGN
+            UP</button>
+          <button (click)="navigate()" class="btn btn-dark btn-block">LOG IN INSTEAD</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

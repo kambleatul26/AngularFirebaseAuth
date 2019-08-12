@@ -1,0 +1,52 @@
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <p class="display-4">LOGIN</p>
+        <form [formGroup]="loginForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" aria-describedby="helpId" formControlName="email">
+            <small id="helpId" class="text-muted">Enter Email</small>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" aria-describedby="helpId2"
+              formControlName="password">
+            <small id="helpId2" class="text-muted">Enter Password</small>
+          </div>
+          <button (click)="login(loginForm.value)" class="btn btn-dark btn-block" [disabled]='!loginForm.valid'>LOG
+            IN</button>
+          <button (click)="navigate()" class="btn btn-dark btn-block">SIGN
+            UP</button>
+          <hr>
+
+          <!-- GOOGLE FACEBOOK -->
+          <div class="row" style="display: flex;margin: 5%">
+            <div class="col s6" style="height: 36px;display: flex">
+              <div>
+                <img src="https://s3.ap-southeast-1.amazonaws.com/common-resources/assets/google-min.png" height="36px"
+                  class="">
+              </div>
+              <div>
+                <button (click)="google()" class="btn waves-effect" style="background-color: #4285F4;color: white">Sign
+                  in with Google</button>
+              </div>
+            </div>
+            <div class="col s6" style="height: 36px;display: flex">
+              <div style="height: 36px;background-color: #4266B2">
+                <img src="https://s3.ap-southeast-1.amazonaws.com/common-resources/assets/facebook-min.png"
+                  height="36px">
+              </div>
+              <div>
+                <button (click)="facebook()" class="btn waves-effect"
+                  style="background-color: #4266B2; color: white">Sign in Facebook</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
