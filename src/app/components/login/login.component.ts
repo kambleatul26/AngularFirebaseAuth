@@ -11,11 +11,16 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   public loginForm: FormGroup;
+  public formError: string = null;
 
   constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
+      email: ['', Validators.compose([Validators.email, Validators.required])],
+      password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
+    });
+
+    this.auth.errCast.subscribe(res => {
+      this.formError = res;
     });
   }
 
@@ -35,7 +40,14 @@ export class LoginComponent implements OnInit {
     this.auth.signInWithFacebook();
   }
 
+  forgot() {
+    if (this.loginForm.value.email) {
+      this.auth.resetPassword(this.loginForm.value.email);
+    }
+  }
+
   ngOnInit() {
+    this.formError = null;
   }
 
 }

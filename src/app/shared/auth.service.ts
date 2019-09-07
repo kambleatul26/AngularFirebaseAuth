@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +11,30 @@ import { Router } from '@angular/router';
 export class AuthService {
   userData: Observable<firebase.User>;
 
-  userValue: any = null;
+  public userValue: any = null;
+  private token = new BehaviorSubject<any>(null);
+  private errMessage = new BehaviorSubject<any>(null);
+
+  public get tokenValue(): any {
+    return this.token.value;
+  }
+
+  public get errCast(): any {
+    return this.errMessage.asObservable();
+  }
 
   constructor(
     private fireauth: AngularFireAuth,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {
     this.userData = fireauth.authState;
     this.userData.subscribe(res => {
       this.userValue = res;
-      console.log(this.userValue);
+      if (this.userValue) {
+        console.log(this.userValue);
+        this.token.next(this.userValue['ra']);
+      }
     });
   }
 
@@ -34,30 +49,43 @@ export class AuthService {
       })
       .catch(error => {
         console.log('Something is wrong:', error.message);
+        this.errMessage.next(error.message);
       });
   }
 
   /* Sign in */
   SignIn(email: string, password: string) {
-    this.fireauth
+    return this.fireauth
       .auth
       .signInWithEmailAndPassword(email, password)
-      .then(res => {
-        console.log('Successfully signed in!');
-        console.log(this.userData);
-        this.router.navigate(['/profile']);
-      })
-      .catch(err => {
-        console.log('Something is wrong:', err.message);
-      });
+        .then(res => {
+          console.log('Successfully signed in!');
+          console.log(res);
+          this.router.navigate(['/profile']);
+        })
+        .catch(err => {
+          console.log('Something is wrong:', err.message);
+          this.errMessage.next(err.message);
+        });
   }
+
 
   /* Sign out */
   SignOut() {
     this.fireauth
-      .auth
-      .signOut();
+    .auth
+    .signOut();
     this.router.navigate(['/login']);
+  }
+
+  /* Reset Password */
+  resetPassword(email: string) {
+    this.fireauth.auth.sendPasswordResetEmail(email)
+      .then(() => console.log('email sent'))
+      .catch((error) => {
+        console.log(error);
+        this.errMessage.next(error.message);
+      });
   }
 
   signInWithFacebook() {
@@ -70,6 +98,7 @@ export class AuthService {
     })
     .catch(error => {
       console.log('Something is wrong:', error.message);
+      this.errMessage.next(error.message);
     });
   }
 
@@ -83,6 +112,7 @@ export class AuthService {
     })
     .catch(error => {
       console.log('Something is wrong:', error.message);
+      this.errMessage.next(error.message);
     });
   }
 }

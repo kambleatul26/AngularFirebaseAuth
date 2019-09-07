@@ -8,9 +8,14 @@ import { AuthService } from 'src/app/shared/auth.service';
 })
 export class ProfileComponent implements OnInit {
 
+  user: any = null;
+
   constructor(public auth: AuthService) { }
 
   ngOnInit() {
+    this.auth.userData.subscribe(res => {
+      this.user = res;
+    });
   }
 
 }

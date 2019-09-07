@@ -19,7 +19,9 @@
             IN</button>
           <button (click)="navigate()" class="btn btn-dark btn-block">SIGN
             UP</button>
+          <button (click)="forgot()" class="btn btn-dark btn-block" [disabled]='!loginForm.value.email'>FORGOT PASSWORD</button>
           <hr>
+          <div *ngIf="formError" class="alert alert-danger">{{ formError }}</div>
 
           <!-- GOOGLE FACEBOOK -->
           <div class="row" style="display: flex;margin: 5%">

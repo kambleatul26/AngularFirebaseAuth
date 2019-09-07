@@ -11,12 +11,18 @@ import { Router } from '@angular/router';
 export class SignupComponent implements OnInit {
 
   public loginForm: FormGroup;
+  public formError: string = null;
 
   constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
+      email: ['', Validators.compose([Validators.email, Validators.required])],
+      password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
     });
+
+    this.auth.errCast.subscribe(res => {
+      this.formError = res;
+    });
+
   }
 
   navigate() {
@@ -28,6 +34,7 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.formError = null;
   }
 
 }

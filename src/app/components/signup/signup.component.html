@@ -18,6 +18,7 @@
           <button (click)="signUp(loginForm.value)" class="btn btn-dark btn-block" [disabled]='!loginForm.valid'>SIGN
             UP</button>
           <button (click)="navigate()" class="btn btn-dark btn-block">LOG IN INSTEAD</button>
+          <div *ngIf="formError" class="alert alert-danger">{{ formError }}</div>
         </form>
       </div>
     </div>
