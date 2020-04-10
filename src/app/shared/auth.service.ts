@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
@@ -41,7 +41,6 @@ export class AuthService {
   /* Sign up */
   SignUp(email: string, password: string) {
     this.fireauth
-      .auth
       .createUserWithEmailAndPassword(email, password)
       .then(res => {
         console.log('Successfully signed up!', res);
@@ -56,7 +55,6 @@ export class AuthService {
   /* Sign in */
   SignIn(email: string, password: string) {
     return this.fireauth
-      .auth
       .signInWithEmailAndPassword(email, password)
         .then(res => {
           console.log('Successfully signed in!');
@@ -73,14 +71,13 @@ export class AuthService {
   /* Sign out */
   SignOut() {
     this.fireauth
-    .auth
     .signOut();
     this.router.navigate(['/login']);
   }
 
   /* Reset Password */
   resetPassword(email: string) {
-    this.fireauth.auth.sendPasswordResetEmail(email)
+    this.fireauth.sendPasswordResetEmail(email)
       .then(() => console.log('email sent'))
       .catch((error) => {
         console.log(error);
@@ -89,7 +86,7 @@ export class AuthService {
   }
 
   signInWithFacebook() {
-    return this.fireauth.auth.signInWithPopup(
+    return this.fireauth.signInWithPopup(
       new firebase.auth.FacebookAuthProvider()
     )
     .then(res => {
@@ -103,7 +100,7 @@ export class AuthService {
   }
 
   signInWithGoogle() {
-    return this.fireauth.auth.signInWithPopup(
+    return this.fireauth.signInWithPopup(
       new firebase.auth.GoogleAuthProvider()
     )
     .then(res => {

@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active" style="cursor: pointer;">
-          <a *ngIf="(this.auth.userData | async) as user" class="nav-link"(click)="logout()">{{ user.displayName || user.email }}<span class="sr-only">(current)</span></a>
+          <a *ngIf="(this.auth.userData | async) as user" class="nav-link">{{ user.displayName || user.email }}<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active" style="cursor: pointer;">
           <a *ngIf="this.auth.userData | async" class="nav-link"(click)="logout()">Logout<span class="sr-only">(current)</span></a>
